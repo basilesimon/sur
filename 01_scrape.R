@@ -1,14 +1,14 @@
 # 01 scrape.R (alternativ): zieht die Daten von wahlrecht.de
 
-# setwd('~/Dropbox/Signal&Rauschen/06_Daten & Visualisierung/')  # Arndt Pfad
-# setwd('~/Git/signalundrauschen')
+setwd('~/Github/sur')
 
 library(htmltab)
 library(dplyr)
 library(stringr)
 library(lubridate)
 
-# Wenn das Script zum Erstenmal ausgeführt wird, dann werden alle Daten gezogen, ansonsten nur die aktuellen. Anschließend werden die alten und die neuen Daten zusammengefügt und Duplikate gelöscht.
+# First run creates data in the right place
+# Next runs merges old and new data
 if (!file.exists('daten/scraped_tables.RData')) {
   cat("First Time. Fetch all files.")
   urls <- c(
@@ -58,7 +58,7 @@ if (!file.exists('daten/scraped_tables.RData')) {
     'http://www.wahlrecht.de/umfragen/insa.htm'
   )
 
-  # Tabellen herunterladen und aneinanderhängen
+  # Download and link tables
   d <- data.frame()
   for(url in urls) {
     cat(url)
@@ -149,7 +149,8 @@ df$befragte <-
   str_replace(df$befragte, '≈|>', '') %>%
   str_replace(pattern = '\\.', replacement = '') %>%
   str_replace(pattern = 'O • ', '') %>%
-  str_replace(pattern = 'T • ', '')
+  str_replace(pattern = 'T • ', '') %>%
+  str_replace(pattern = 'ü', 'u')
 df$befragte <- as.integer(df$befragte)
 
 # Datumsangaben
@@ -199,4 +200,4 @@ source('02_abweichung.R')
 write.csv(df, 'daten/umfragedaten.csv', row.names = F)
 
 # pth <- '../07_Daten von Wahlrecht de/'
-# write.csv(df, paste0(pth, 'umfragedaten.csv', format(Sys.time(), "%Y-%m-%d_%H-%M")), row.names = F)
+#write.csv(df, paste0(pth, 'umfragedaten.csv', format(Sys.time(), "%Y-%m-%d_%H-%M")), row.names = F)

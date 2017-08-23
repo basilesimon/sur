@@ -96,7 +96,7 @@ df$rmsegewicht <- 1 / df$rmse
 
 # Neuer (leerer) Datensatz: jeder Tag des Jahres bis momentanes Datum und alle parteien, stimmanteile
 
-daten <- seq(ymd('2017-01-01'), Sys.Date(), by = 'days')
+daten <- seq(ymd('2016-01-01'), Sys.Date(), by = 'days')
 
 # Loop durch den neuen Datensatz
 # darin Reduzierung des alten auf die zwei Woche vor Tag
@@ -136,9 +136,9 @@ for(i in 1:length(daten)) {
 schnitte <- schnitte %>% tidyr::spread(partei, stimmanteil) %>%
   ungroup() %>% rename(`CDU/CSU` = cdu_csu, SPD = spd,
                        `Die Linke/PDS` = linke_pds, AfD = afd,
-                       `Bündnis 90/Die Grünen` = gruene, FDP = fdp,
+                       `Bundnis 90/Die Grunen` = gruene, FDP = fdp,
                        date = datum) %>%
-  select(date, `CDU/CSU`, SPD, `Die Linke/PDS`, AfD, `Bündnis 90/Die Grünen`,
+  select(date, `CDU/CSU`, SPD, `Die Linke/PDS`, AfD, `Bundnis 90/Die Grunen`,
          FDP)
 
 write.csv(schnitte, 'daten/schnitt2.csv', row.names = F)
