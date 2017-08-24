@@ -41,40 +41,39 @@ wochenschnitt <- df %>% filter(!is.na(jahr), !is.na(woche)) %>%
   filter(!is.na(stimmanteil)) %>%
   mutate(date = as.Date(paste(jahr, woche, 1, sep="-"), "%Y-%U-%u"),
          partei = recode(partei, afd = 'AfD', cdu_csu = 'CDU/CSU',
-                         fdp = 'FDP', gruene = "Bundnis 90/Die Grunen",
-                         linke_pds = 'Die Linke/PDS', piraten = 'Piraten',
+                         fdp = 'FDP', gruene = "Green",
+                         linke_pds = 'Left', piraten = 'Piraten',
                          sonstige = 'Sonstige', spd = 'SPD')) %>%
   filter(!is.na(date)) %>%
   spread(partei, stimmanteil) %>% ungroup() %>%
-  select(date, `CDU/CSU`, SPD, `Die Linke/PDS`, AfD, `Bundnis 90/Die Grunen`,
-         FDP)
+  select(date, `CDU/CSU`, SPD, `Left`, AfD, `Green`, FDP)
 
 write.csv(wochenschnitt, 'daten/schnitt1.csv', row.names = F)
 
 # 2016-2017 
 
-wochenschnitt20162017 <- df %>% filter(!is.na(jahr), !is.na(woche)) %>%
-  subset(jahr == 2017 | jahr == 2016) %>% 
-  group_by(jahr, woche, partei) %>%
-  summarise(stimmanteil = mean(stimmanteil, na.rm = T)) %>%
-  filter(!is.na(stimmanteil)) %>%
-  mutate(date = as.Date(paste(jahr, woche, 1, sep="-"), "%Y-%U-%u"),
-         partei = recode(partei, afd = 'AfD', cdu_csu = 'CDU/CSU',
-                         fdp = 'FDP', gruene = "Bundnis 90/Die Grunen",
-                         linke_pds = 'Die Linke/PDS', piraten = 'Piraten',
-                         sonstige = 'Sonstige', spd = 'SPD')) %>%
-  filter(!is.na(date)) %>%
-  spread(partei, stimmanteil) %>% ungroup() %>%
-  select(date, `CDU/CSU`, SPD, `Die Linke/PDS`, AfD, `Bundnis 90/Die Grunen`,
-         FDP)
-
-write.csv(wochenschnitt20162017, 'daten/schnitt20162017.csv', row.names = F)
-
-# Viz
-long <- melt(wochenschnitt20162017, id="date")
-ggplot(data=long,
-  aes(x=date, y=value, colour=variable)) +
-  geom_line()
+# wochenschnitt20162017 <- df %>% filter(!is.na(jahr), !is.na(woche)) %>%
+#   subset(jahr == 2017 | jahr == 2016) %>% 
+#   group_by(jahr, woche, partei) %>%
+#   summarise(stimmanteil = mean(stimmanteil, na.rm = T)) %>%
+#   filter(!is.na(stimmanteil)) %>%
+#   mutate(date = as.Date(paste(jahr, woche, 1, sep="-"), "%Y-%U-%u"),
+#          partei = recode(partei, afd = 'AfD', cdu_csu = 'CDU/CSU',
+#                          fdp = 'FDP', gruene = "Green",
+#                          linke_pds = 'Left', piraten = 'Piraten',
+#                          sonstige = 'Sonstige', spd = 'SPD')) %>%
+#   filter(!is.na(date)) %>%
+#   spread(partei, stimmanteil) %>% ungroup() %>%
+#   select(date, `CDU/CSU`, SPD, `Die Linke/PDS`, AfD, `Bundnis 90/Die Grunen`,
+#          FDP)
+# 
+# write.csv(wochenschnitt20162017, 'daten/schnitt20162017.csv', row.names = F)
+# 
+# # Viz
+# long <- melt(wochenschnitt20162017, id="date")
+# ggplot(data=long,
+#   aes(x=date, y=value, colour=variable)) +
+#   geom_line()
 
 
 

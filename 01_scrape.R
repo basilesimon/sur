@@ -28,12 +28,12 @@ if (!file.exists('daten/scraped_tables.RData')) {
     paste0('http://www.wahlrecht.de/umfragen/forsa/',1998:2008,'.htm'),
     # Forschungsgruppe Wahlen
     # Projektion
-    'http://www.wahlrecht.de/umfragen/politbarometer.htm',
-    'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2013.htm',
-    'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2009.htm',
-    'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2005.htm',
-    'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2002.htm',
-    'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-1998.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2013.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2009.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2005.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-2002.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer/politbarometer-1998.htm',
     # Politische Stimmung
     'http://www.wahlrecht.de/umfragen/politbarometer/stimmung.htm',
     'http://www.wahlrecht.de/umfragen/politbarometer/stimmung-2013.htm',
@@ -83,7 +83,7 @@ if (!file.exists('daten/scraped_tables.RData')) {
     'http://www.wahlrecht.de/umfragen/forsa.htm',
     # Forschungsgruppe Wahlen
     # Projektion
-    'http://www.wahlrecht.de/umfragen/politbarometer.htm',
+    # 'http://www.wahlrecht.de/umfragen/politbarometer.htm',
     # Politische Stimmung
     'http://www.wahlrecht.de/umfragen/politbarometer/stimmung.htm',
     # GMS
@@ -197,7 +197,11 @@ df <- df %>% arrange(desc(datum), institut, partei)
 
 source('02_abweichung.R')
 
-write.csv(df, 'daten/umfragedaten.csv', row.names = F)
+df_20162017 <- subset(df, jahr == 2017 | jahr == 2016) %>%
+  select(datum, partei, stimmanteil) %>%
+  `colnames<-`(c("date", "party", "poll"))
 
+write.csv(df, 'daten/umfragedaten.csv', row.names = F)
+write.csv(df_20162017, 'daten/polls.csv', row.names = F)
 # pth <- '../07_Daten von Wahlrecht de/'
 #write.csv(df, paste0(pth, 'umfragedaten.csv', format(Sys.time(), "%Y-%m-%d_%H-%M")), row.names = F)
