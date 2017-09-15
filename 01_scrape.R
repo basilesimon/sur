@@ -200,8 +200,10 @@ source('02_abweichung.R')
 df_20162017 <- subset(df, jahr == 2017 | jahr == 2016) %>%
   select(datum, partei, stimmanteil) %>%
   `colnames<-`(c("date", "party", "poll"))
+df_20162017$date <- as.Date(df_20162017$date, "%Y-%m-%d")
+cut_df <- subset(df_20162017, date>'2016-08-01')
 
 write.csv(df, 'daten/umfragedaten.csv', row.names = F)
-write.csv(df_20162017, 'daten/polls.csv', row.names = F)
+write.csv(cut_df, 'daten/polls.csv', row.names = F)
 # pth <- '../07_Daten von Wahlrecht de/'
 #write.csv(df, paste0(pth, 'umfragedaten.csv', format(Sys.time(), "%Y-%m-%d_%H-%M")), row.names = F)
