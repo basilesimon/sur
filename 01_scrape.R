@@ -197,7 +197,7 @@ df <- df %>% arrange(desc(datum), institut, partei)
 
 source('02_abweichung.R')
 
-df_20162017 <- subset(df, jahr == 2017 | jahr == 2016) %>%
+df_20162017 <- subset(df, jahr == 2018 | jahr == 2017 | jahr == 2016) %>%
   select(datum, partei, stimmanteil) %>%
   `colnames<-`(c("date", "party", "poll"))
 df_20162017$date <- as.Date(df_20162017$date, "%Y-%m-%d")
